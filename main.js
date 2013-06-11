@@ -66,31 +66,13 @@ Reboot.prototype.execKill = function() {
 	this.stack.add(function(params, onFinish) {
 		console.log("> KILLING ALL NODE PROCESS.");
 		scope.appendToFile(scope.shellscript, "killall node", onFinish);
-		
-		/*var child = exec("killall node", function (error, stdout, stderr) {
-			//sys.print('stdout: ' + stdout);
-			//sys.print('stderr: ' + stderr);
-			if (error !== null) {
-				//console.log('exec error: ' + error);
-			}
-			onFinish();
-		});*/
 	}, {});
 }
 Reboot.prototype.execNode = function(script) {
 	var scope = this;
 	this.stack.add(function(params, onFinish) {
 		console.log("> STARTING "+script+".");
-		scope.appendToFile(scope.shellscript, "node "+script+"", onFinish);
-		
-		/*var child = exec("node "+script+"", function (error, stdout, stderr) {
-			console.log(">> stdout",stdout);
-			console.log(">> stderr",stderr);
-			if (error !== null) {
-				console.log('>> error',error);
-			}
-			onFinish();
-		});*/
+		scope.appendToFile(scope.shellscript, "nohup node "+script+" > "+scope.today+".log &", onFinish);
 	}, {});
 }
 Reboot.prototype.execUpdate = function(path) {
@@ -98,15 +80,6 @@ Reboot.prototype.execUpdate = function(path) {
 	this.stack.add(function(params, onFinish) {
 		console.log("> UPDATING "+path+".");
 		scope.appendToFile(scope.shellscript, "cd "+path+" && git pull", onFinish);
-		
-		/*var child = exec("cd "+path+" && git pull", function (error, stdout, stderr) {
-			//sys.print('stdout: ' + stdout);
-			//sys.print('stderr: ' + stderr);
-			if (error !== null) {
-				//console.log('exec error: ' + error);
-			}
-			onFinish();
-		});*/
 	}, {});
 }
 Reboot.prototype.emptyFile = function(filename) {
