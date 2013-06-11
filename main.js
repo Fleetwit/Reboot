@@ -28,7 +28,7 @@ function Reboot() {
 	this.today 	= dateFormat(new Date(), "mmmm-dS-yyyy");
 	this.scripts	= {
 		Datastore:	{
-			path:	"/home/gitbuffer/Datastore/",
+			path:	"/home/gitbuffer/datastore/",
 			script:	"main.js"
 		},
 		Agora:	{
@@ -52,7 +52,7 @@ Reboot.prototype.reboot = function() {
 	//this.execKill();
 	for (name in this.scripts) {
 		this.execUpdate(this.scripts[name].path);
-		//this.execNode(this.scripts[name].path+this.scripts[name].script);
+		this.execNode(this.scripts[name].path+this.scripts[name].script);
 	}
 	this.stack.process(function() {
 		console.log("> REBOOT DONE.");
@@ -63,10 +63,10 @@ Reboot.prototype.execKill = function() {
 	this.stack.add(function(params, onFinish) {
 		console.log("> KILLING ALL NODE PROCESS.");
 		var child = exec("killall node", function (error, stdout, stderr) {
-			sys.print('stdout: ' + stdout);
-			sys.print('stderr: ' + stderr);
+			//sys.print('stdout: ' + stdout);
+			//sys.print('stderr: ' + stderr);
 			if (error !== null) {
-				console.log('exec error: ' + error);
+				//console.log('exec error: ' + error);
 			}
 			onFinish();
 		});
@@ -77,10 +77,10 @@ Reboot.prototype.execNode = function(script) {
 	this.stack.add(function(params, onFinish) {
 		console.log("> STARTING "+script+".");
 		var child = exec("nohup node "+script+" > "+scope.today+".log &", function (error, stdout, stderr) {
-			sys.print('stdout: ' + stdout);
-			sys.print('stderr: ' + stderr);
+			//sys.print('stdout: ' + stdout);
+			//sys.print('stderr: ' + stderr);
 			if (error !== null) {
-				console.log('exec error: ' + error);
+				//console.log('exec error: ' + error);
 			}
 			onFinish();
 		});
@@ -91,10 +91,10 @@ Reboot.prototype.execUpdate = function(path) {
 	this.stack.add(function(params, onFinish) {
 		console.log("> UPDATING "+path+".");
 		var child = exec("cd "+path+" && git pull", function (error, stdout, stderr) {
-			sys.print('stdout: ' + stdout);
-			sys.print('stderr: ' + stderr);
+			//sys.print('stdout: ' + stdout);
+			//sys.print('stderr: ' + stderr);
 			if (error !== null) {
-				console.log('exec error: ' + error);
+				//console.log('exec error: ' + error);
 			}
 			onFinish();
 		});
