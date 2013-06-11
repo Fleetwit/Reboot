@@ -71,6 +71,13 @@ Reboot.prototype.reboot = function() {
 				this.execNode(this.scripts[name].path+this.scripts[name].script);
 			}
 		}
+	} else if (this.options.ignore) {
+		for (name in this.scripts) {
+			if (!this.options.ignore.contains(name)) {
+				this.execUpdate(this.scripts[name].path);
+				this.execNode(this.scripts[name].path+this.scripts[name].script);
+			}
+		}
 	} else {
 		this.execKill();
 		for (name in this.scripts) {
