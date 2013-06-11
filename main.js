@@ -53,7 +53,7 @@ function Reboot() {
 		},
 		Mailstack:	{
 			path:	"/home/gitbuffer/Mailstack/",
-			script:	"main.js -mysql online -batchsize 50"
+			script:	"main.js -mysql online -batchsize 50 -use smtp"
 		},
 	};
 	this.options = this.processArgs();
