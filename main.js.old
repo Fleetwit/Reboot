@@ -25,9 +25,8 @@ for (i in args) {
 }
 
 function Reboot() {
-	this.stack 			= new stack(); 
-	this.today 			= dateFormat(new Date(), "mmmm-dS-yyyy");
-	this.shellscript	= "boot.sh";
+	this.stack 	= new stack(); 
+	this.today 	= dateFormat(new Date(), "mmmm-dS-yyyy");
 	this.scripts	= {
 		Datastore:	{
 			path:	"/home/gitbuffer/datastore/",
@@ -51,8 +50,7 @@ Reboot.prototype.reboot = function() {
 	var scope = this;
 	var name;
 	// Kill all node process
-	this.emptyFile(this.shellscript);
-	this.execKill();
+	//this.execKill();
 	for (name in this.scripts) {
 		this.execUpdate(this.scripts[name].path);
 		this.execNode(this.scripts[name].path+this.scripts[name].script);
@@ -65,57 +63,46 @@ Reboot.prototype.execKill = function() {
 	var scope = this;
 	this.stack.add(function(params, onFinish) {
 		console.log("> KILLING ALL NODE PROCESS.");
-		scope.appendToFile(scope.shellscript, "killall node", onFinish);
-		
-		/*var child = exec("killall node", function (error, stdout, stderr) {
+		var child = exec("killall node", function (error, stdout, stderr) {
 			//sys.print('stdout: ' + stdout);
 			//sys.print('stderr: ' + stderr);
 			if (error !== null) {
 				//console.log('exec error: ' + error);
 			}
 			onFinish();
-		});*/
+		});
 	}, {});
 }
 Reboot.prototype.execNode = function(script) {
 	var scope = this;
 	this.stack.add(function(params, onFinish) {
 		console.log("> STARTING "+script+".");
-		scope.appendToFile(scope.shellscript, "node "+script+"", onFinish);
-		
-		/*var child = exec("node "+script+"", function (error, stdout, stderr) {
+		var child = exec("node "+script+"", function (error, stdout, stderr) {
 			console.log(">> stdout",stdout);
 			console.log(">> stderr",stderr);
 			if (error !== null) {
 				console.log('>> error',error);
 			}
 			onFinish();
-		});*/
+		});
 	}, {});
 }
 Reboot.prototype.execUpdate = function(path) {
 	var scope = this;
 	this.stack.add(function(params, onFinish) {
 		console.log("> UPDATING "+path+".");
-		scope.appendToFile(scope.shellscript, "cd "+path+" && git pull", onFinish);
-		
-		/*var child = exec("cd "+path+" && git pull", function (error, stdout, stderr) {
+		var child = exec("cd "+path+" && git pull", function (error, stdout, stderr) {
 			//sys.print('stdout: ' + stdout);
 			//sys.print('stderr: ' + stderr);
 			if (error !== null) {
 				//console.log('exec error: ' + error);
 			}
 			onFinish();
-		});*/
+		});
 	}, {});
 }
-Reboot.prototype.emptyFile = function(filename) {
-	var log = fs.createWriteStream(filename, {'flags': 'w'});
-	log.end("#!/bin/sh\n");
-	
-}
 Reboot.prototype.appendToFile = function(filename, data, callback) {
-	fs.appendFile(filename, data+"\n", function (err) {
+	fs.appendFile(filename, data, function (err) {
 		if (callback) {
 			callback();
 		}
