@@ -1,4 +1,4 @@
 @echo off
 cd C:\xampp\htdocs\git\Reboot
-node main.js
+node main.js -reboot Daemons,Datastore
 pause
