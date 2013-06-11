@@ -23,21 +23,6 @@ for (i in args) {
 	console.log("-> ",i,": ",args[i]);
 }
 
-
-
-
-
-var child = exec("killall node", function (error, stdout, stderr) {
-	sys.print('stdout: ' + stdout);
-	sys.print('stderr: ' + stderr);
-	if (error !== null) {
-		console.log('exec error: ' + error);
-	}
-});
-
-
-///home/gitbuffer/Datastore/main.js
-
 function Reboot() {
 	this.stack 	= new stack(); 
 	this.today 	= dateFormat(new Date(), "mmmm-dS-yyyy");
@@ -115,3 +100,7 @@ Reboot.prototype.execUpdate = function(path) {
 		});
 	}, {});
 }
+
+
+var reboot = new Reboot();
+reboot.reboot();
