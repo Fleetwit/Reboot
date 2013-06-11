@@ -49,7 +49,7 @@ Reboot.prototype.reboot = function() {
 	var scope = this;
 	var name;
 	// Kill all node process
-	this.execKill();
+	//this.execKill();
 	for (name in this.scripts) {
 		this.execUpdate(this.scripts[name].path);
 		this.execNode(this.scripts[name].path+this.scripts[name].scipt);
