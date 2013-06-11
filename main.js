@@ -52,7 +52,7 @@ Reboot.prototype.reboot = function() {
 	//this.execKill();
 	for (name in this.scripts) {
 		this.execUpdate(this.scripts[name].path);
-		this.execNode(this.scripts[name].path+this.scripts[name].scipt);
+		//this.execNode(this.scripts[name].path+this.scripts[name].script);
 	}
 	this.stack.process(function() {
 		console.log("> REBOOT DONE.");
