@@ -76,7 +76,7 @@ Reboot.prototype.execNode = function(script) {
 	var scope = this;
 	this.stack.add(function(params, onFinish) {
 		console.log("> STARTING "+script+".");
-		var child = exec("nohup node "+script+" > "+scope.today+".log &", function (error, stdout, stderr) {
+		var child = exec("node "+script+"", function (error, stdout, stderr) {
 			console.log(">> stdout",stdout);
 			console.log(">> stderr",stderr);
 			if (error !== null) {
