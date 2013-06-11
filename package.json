@@ -1,0 +1,10 @@
+{
+	"name": 		"Reboot",
+	"description": 	"Reboot",
+	"version":		"1.0.0",
+	"dependencies": {
+		"underscore":	"latest",
+		"dateformat":	"latest"
+	}
+}
+
