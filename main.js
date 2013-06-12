@@ -78,6 +78,18 @@ Reboot.prototype.reboot = function() {
 				this.execNode(this.scripts[name].path+this.scripts[name].script);
 			}
 		}
+	} else if (this.options.service) {
+		for (name in this.scripts) {
+			//this.emptyFile("output/"+name+".conf", );
+			(function(name) {
+				scope.parseTemplate("tpl.conf", {
+					name:		name,
+					command:	"node "+scope.scripts[name].path+scope.scripts[name].script+" >> "+scope.scripts[name].path+scope.today+".log 2>&1"
+				}, function(response) {
+					scope.emptyFile("output/"+name+".conf", response);
+				});
+			})(name);
+		}
 	} else {
 		this.execKill();
 		for (name in this.scripts) {
@@ -85,8 +97,39 @@ Reboot.prototype.reboot = function() {
 			this.execNode(this.scripts[name].path+this.scripts[name].script);
 		}
 	}
+	
+	
+	if (this.options.service) {
+		// write the copy script
+		this.emptyFile("output/copy.sh");
+		for (name in this.scripts) {
+			this.stack.add(function(params, onFinish) {
+				scope.appendToFile("output/copy.sh", "copy "+params.name+".conf /etc/init/"+params.name+".conf", onFinish);
+			}, {name:name});
+		}
+	}
+	
 	this.stack.process(function() {
 		console.log("> REBOOT DONE.");
+	});
+}
+Reboot.prototype.parseTemplate = function(template, data, callback) {
+	var scope 	= this;
+	
+	// Set the template markup
+	_.templateSettings = {
+		interpolate : /\{\{(.+?)\}\}/g
+	};
+	
+	
+	// Read the template
+	fs.readFile(template, 'utf8', function (err, response) {
+		
+		// Compile the template
+		var template 	= _.template(response);
+		// Execute and store the code
+		var tplcode		= template(data);
+		callback(tplcode);
 	});
 }
 Reboot.prototype.execKill = function() {
@@ -110,10 +153,13 @@ Reboot.prototype.execUpdate = function(path) {
 		scope.appendToFile(scope.shellscript, "cd "+path+" && git pull", onFinish);
 	}, {});
 }
-Reboot.prototype.emptyFile = function(filename) {
+Reboot.prototype.emptyFile = function(filename, data) {
 	var log = fs.createWriteStream(filename, {'flags': 'w'});
-	log.end("#!/bin/sh\n");
-	
+	if (data) {
+		log.end(data);
+	} else {
+		log.end("#!/bin/sh\n");
+	}
 }
 Reboot.prototype.appendToFile = function(filename, data, callback) {
 	fs.appendFile(filename, data+"\n", function (err) {
