@@ -104,7 +104,7 @@ Reboot.prototype.reboot = function() {
 		this.emptyFile("output/copy.sh");
 		for (name in this.scripts) {
 			this.stack.add(function(params, onFinish) {
-				scope.appendToFile("output/copy.sh", "copy "+params.name+".conf /etc/init/"+params.name+".conf", onFinish);
+				scope.appendToFile("output/copy.sh", "cp "+params.name+".conf /etc/init/"+params.name+".conf", onFinish);
 			}, {name:name});
 		}
 	}
