@@ -64,7 +64,7 @@ Reboot.prototype.reboot = function() {
 	var name;
 	// Kill all node process
 	this.emptyFile(this.shellscript);
-	/*if (this.options.reboot) {
+	if (this.options.reboot) {
 		for (name in this.scripts) {
 			if (this.options.reboot.contains(name)) {
 				this.execUpdate(this.scripts[name].path);
@@ -78,7 +78,7 @@ Reboot.prototype.reboot = function() {
 				this.execNode(this.scripts[name].path+this.scripts[name].script);
 			}
 		}
-	} else if (this.options.service) {*/
+	} else if (this.options.service) {
 		for (name in this.scripts) {
 			//this.emptyFile("output/"+name+".conf", );
 			(function(name) {
@@ -90,13 +90,13 @@ Reboot.prototype.reboot = function() {
 				});
 			})(name);
 		}
-	/*} else {
+	} else {
 		this.execKill();
 		for (name in this.scripts) {
 			this.execUpdate(this.scripts[name].path);
 			this.execNode(this.scripts[name].path+this.scripts[name].script);
 		}
-	}*/
+	}
 	
 	
 	if (this.options.service) {
