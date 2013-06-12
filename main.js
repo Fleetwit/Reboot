@@ -84,7 +84,8 @@ Reboot.prototype.reboot = function() {
 			(function(name) {
 				scope.parseTemplate("tpl.conf", {
 					name:		name,
-					command:	"node "+scope.scripts[name].path+scope.scripts[name].script+" >> "+scope.scripts[name].path+scope.today+".log 2>&1"
+					command:	"node "+scope.scripts[name].path+scope.scripts[name].script+" >> "+scope.scripts[name].path+scope.today+".log 2>&1",
+					path:		scope.scripts[name].path
 				}, function(response) {
 					scope.emptyFile("output/"+name+".conf", response);
 				});
